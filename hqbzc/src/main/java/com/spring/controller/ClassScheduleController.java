@@ -54,7 +54,7 @@ public class ClassScheduleController {
 	
 	
 	/*
-	 * 申请教室
+	 *  申请教室
 	 */
 	@RequestMapping("/saveApplyClass")
 	public String saveApplyClass(HttpServletRequest request, ApplyClass applyClass) {
