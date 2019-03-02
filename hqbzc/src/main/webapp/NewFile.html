@@ -20,6 +20,8 @@
       </div>
     </div>
   </div>
+  
+  <input type="text" id="test">
 
 <!-- 条目中可以是任意内容，如：<img src=""> -->
  
@@ -37,6 +39,19 @@ layui.use('laydate', function(){
     ,position: 'static'
   });
 });
+</script>
+
+<script type="text/javascript">
+	$(function(){
+		
+		var str = "";
+		function test(data){
+			str += data;
+			$("#test").val(str);
+		}
+		
+	})
+
 </script>
 </body>
 </html>

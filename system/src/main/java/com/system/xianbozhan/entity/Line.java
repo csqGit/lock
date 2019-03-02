@@ -13,6 +13,9 @@ public class Line {
 	private String beginLine;//起始线路
 	private String endLine;//结束线路
 	private Integer towerNumber;//杆塔数量
+	
+	
+	
 	public Integer getId() {
 		return id;
 	}

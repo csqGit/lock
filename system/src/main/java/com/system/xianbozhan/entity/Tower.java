@@ -9,6 +9,7 @@ public class Tower {
 	private String towerAddress;//杆塔位置
 	private String installDate;//安装日期
 	private String runDate;//投运日期
+	
 	private Line line_id;//线路编号
 	public Integer getId() {
 		return id;
