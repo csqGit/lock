@@ -1,7 +1,9 @@
 package com.app.bzpower.controller;
 
 import java.util.List;
+import java.util.concurrent.locks.Lock;
 
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -31,65 +33,15 @@ public class LogController {
 	 * 
 	 * request 0表示未审核  1表示已审核
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@RequestMapping("saveLog")
-	@ResponseBody
-	@CrossOrigin(origins = "*", maxAge = 3600)
-	public RequestResult saveLog( String userName, String mac, 
-								String did, String openDate, String closeDate, String action, String request) {
-		RequestResult rr = new RequestResult();;
-		try {
-			if(action.equals(true)) {
-				rr.setCode(100);
-			}else {
-				rr.setCode(300);
-			}
-			action = (action.equals("true")) ? "同意开锁" :"不同意开锁";
-			
-//			logService.saveLog(mac, did, openDate, action, request);
-			rr.setResult("保存成功");
-		} catch (Exception e) {
-			e.printStackTrace();
-			rr.setCode(100);
-			rr.setResult("保存失败");
-		}
-		return rr;
-	}
 
-	
-	/*
-	 * 用户请求开锁信息
-	 */
-	@RequestMapping("saveLog2")
-	@ResponseBody
-	@CrossOrigin(origins = "*", maxAge = 3600)
-	public RequestResult saveLog2(String mac, String did, String actionD, String requestTime, String request) {
-		RequestResult rr = new RequestResult();;
-		try {
-			if(actionD.equals("true")) {
-				rr.setCode(100);
-			}else {
-				rr.setCode(300);
-			}
-			actionD = (actionD.equals("true")) ? "请求开锁" :"请求关锁";
-			
-//			logService.saveLog(mac, did, requestTime, actionD, request);
-			rr.setResult("保存成功");
-		} catch (Exception e) {
-			e.printStackTrace();
-			rr.setCode(100);
-			rr.setResult("保存失败");
-		}
-		return rr;
-	}
 	
 	@RequestMapping("getLog")
 	@ResponseBody
 	@CrossOrigin(origins = "*", maxAge = 3600)
-	public RequestResult getLog(String request) {
+	public RequestResult getLog(Integer status, Integer actionD) {
 		RequestResult rr = new RequestResult();;
 		try {
-			List<Log> logList = logService.getLog(request);
+			List<Log> logList = logService.getLog(status, actionD);
 			rr.setCode(100);
 			rr.setResult(logList);
 		} catch (Exception e) {
@@ -108,10 +60,22 @@ public class LogController {
 	@ResponseBody
 	@CrossOrigin(origins = "*", maxAge = 3600)
 	public RequestResult insertUserRequestOpenLock(String userName, String did, String mac, String requestTime,
-			String actionD, String request) {
+			int on_off, int actionD, int status) {
 		RequestResult rr = new RequestResult();;
 		try {
-			logService.insertUserRequestOpenLock(userName, did, mac, requestTime, actionD, request);
+			Log log = new Log();
+			log.setCompany("西安博展电力技术有限公司");
+			log.setUserName("测试");
+			log.setMac(mac);
+			log.setDid(did);
+			log.setRequestTime(requestTime);
+			log.setOpenTime(null);
+			log.setCloseTime(null);
+			log.setActionD(actionD);
+			log.setStatus(status);
+			log.setOnOff(on_off);
+//			logService.insertUserRequestOpenLock(userName, did, mac, requestTime, on_off, actionD, status);
+			logService.insertUserRequestOpenLock(log);
 			rr.setCode(100);
 			rr.setResult("保存成功");
 		} catch (Exception e) {
@@ -129,17 +93,74 @@ public class LogController {
 	@RequestMapping("updateOpenLockInfo")
 	@ResponseBody
 	@CrossOrigin(origins = "*", maxAge = 3600)
-	public RequestResult updateOpenLockInfo(int id, String request,String openTime, String actionD) {
+	public RequestResult updateOpenLockInfo(int id,String openTime, int on_off, int actionD, int status) {
 		RequestResult rr = new RequestResult();;
 		try {
-			logService.updateOpenLockInfo(id, request, openTime, actionD);
+			logService.updateOpenLockInfo(id, openTime, on_off, actionD, status);
 			rr.setCode(100);
-			rr.setResult("开锁成功");
+			rr.setResult("修改信息成功");
 		} catch (Exception e) {
 			e.printStackTrace();
 			rr.setCode(200);
-			rr.setResult("开锁失败");
+			rr.setResult("修改信息失败");
 		}
 		return rr;
 	}
+	
+	@RequestMapping("getLogById")
+	@ResponseBody
+	@CrossOrigin(origins = "*", maxAge = 3600)
+	public Log getLogById(Integer id) {
+		Log log = null;
+		try {
+			log = logService.getLogById(id);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return log;
+	}
+	
+	/**
+	 * 获取动态码
+	 */
+	@RequestMapping("getDtm")
+	@ResponseBody
+	@CrossOrigin(origins = "*", maxAge = 3600)
+	public RequestResult getDtm(String yzm) {
+		RequestResult rr = new RequestResult();
+		if(yzm != null || !"".equals(yzm)) {
+			rr.setCode(100);
+			rr.setResult(autoDtm(yzm));
+		}else {
+			rr.setCode(200);
+			rr.setResult("");
+		}
+		return rr;
+	}
+	
+	
+	public String autoDtm(String yzm) {
+		int [] num = new int[4];
+		String returnResult = "";
+		for(int i = 0; i < yzm.length(); i ++) {
+			String str = yzm.substring(i, i + 1);
+			num[i] = Integer.parseInt(str);
+			System.out.println(i + " - " + num[i] + " - ");
+		}
+		for(int j = 0; j < yzm.length(); j ++) {
+			//定义算法方程为y = x^2 + 2*x + 1
+			int result = num[j] * num[j] + 2 * num[j] + 1;
+			if(result > 10) {//如果该数大于10，则取个位数
+				result = result %= 10 ;
+				System.out.println("result = " + result);
+			}
+			returnResult += String.valueOf(result);
+			System.out.println("returnResult = " + returnResult);
+		}
+		System.out.println(returnResult);
+		return returnResult;
+	}
+	
+	
 }

@@ -31,7 +31,7 @@ public class UserController {
 			String realName, String company, String password) {
 		Company cp = new Company();
 		cp.setId(2);
-		cp.setCompany(company);
+		cp.setCompanyName(company);
 		RequestResult result = new RequestResult();
 		try {
 			userService.userRegister(telephone, userName, realName, cp, password);

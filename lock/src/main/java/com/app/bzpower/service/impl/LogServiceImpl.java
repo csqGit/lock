@@ -22,19 +22,30 @@ public class LogServiceImpl implements LogService {
 
 	}
 
-	public List<Log> getLog(String request) {
-		return logDao.getLog(request);
+	public List<Log> getLog(int status, int actionD) {
+		return logDao.getLog(status, actionD);
 	}
 
-	public void updateOpenLockInfo(int id, String request, String openTime, String actionD) {
-		logDao.updateOpenLockInfo(id, request, openTime, actionD);
+
+	public void insertUserRequestOpenLock(String userName, String did, String mac, 
+			String requestTime, int on_off, int actionD, int status) {
+//		logDao.insertUserRequestOpenLock(userName, did, mac, requestTime, on_off, actionD, status);
 		
 	}
 
-	public void insertUserRequestOpenLock(String userName, String did, String mac, String requestTime, String actionD,
-			String request) {
-		logDao.insertUserRequestOpenLock(userName, did, mac, requestTime, actionD, request);
+	public Log getLogById(int id) {
+		// TODO Auto-generated method stub
+		return logDao.getLogById(id);
+	}
+
+	public void updateOpenLockInfo(int id, String openTime, int on_off, int actionD, int status) {
+		logDao.updateOpenLockInfo(id, openTime, on_off, actionD, status);
 		
+	}
+
+	public void insertUserRequestOpenLock(Log log) {
+		// TODO Auto-generated method stub
+		logDao.insertUserRequestOpenLock(log);
 	}
 
 }

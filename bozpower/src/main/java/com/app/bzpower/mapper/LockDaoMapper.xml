@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.bzpower.dao.LockDao">
+	<resultMap type="com.app.bzpower.entity.LockInfo"
+		id="lockMap">
+		<result column="id" property="id" />
+		<result column="mac" property="mac" />
+		<result column="did" property="did" />
+		<result column="passcode" property="passcode" />
+		<result column="lockName" property="lockName" />
+		<result column="companyName" property="companyName" />
+		<result column="transformerSubName" property="transformerSubName" />
+		<result column="classes" property="classes" />
+	</resultMap>
+	
+	
+	
+	<select id="selectLockByName" resultType="com.app.bzpower.entity.LockInfo">
+		select * from lockInfo where lockName = #{lockName}
+	</select>
+	
+	<select id="selectLockById" parameterType="java.lang.Integer" resultType="com.app.bzpower.entity.LockInfo">
+		select * from lockInfo where id = #{id}
+	</select>
+	
+	<select id="selectLockList" resultType="com.app.bzpower.entity.LockInfo">
+		select * from lockInfo 
+		<if test="maxResult > 0">
+			limit #{startPage}, #{maxResult}
+		</if>
+		
+	</select>
+	
+	
+	<select id="selectLockByDid" resultType="com.app.bzpower.entity.LockInfo">
+		select * from lockInfo where did = #{did}
+	</select>
+	
+	<!-- 得到锁的总条数 -->
+	<select id="selectLockCount" resultType="java.lang.Integer">
+		select count(*) as count from lockInfo
+	</select>
+	
+
+	<insert id="insertLock" parameterType="com.app.bzpower.entity.LockInfo" >
+		insert into lockinfo( did, mac, lockName, companyName,transformerSubName,classes)
+					values (#{did}, #{mac},#{lockName}, #{companyName},#{transformerSubName}, #{classes})
+	</insert>
+
+	<update id="updateLock" parameterType="com.app.bzpower.entity.LockInfo">
+		update lockinfo 
+		<!-- 使用trim就是为了删掉最后字段的“,”。主要不用单独写SET了，因为set被包含在trim中了 -->
+		<trim prefix="set" suffixOverrides=",">
+			<if test="did!=null &amp;&amp; did != ''">did=#{did},</if>
+			<if test="mac!=null &amp;&amp; mac != ''">mac=#{mac},</if>
+			<if test="lockName!=null &amp;&amp; lockName != ''">lockName=#{lockName},</if>
+			<if test="companyName!=null &amp;&amp; companyName != ''">companyName=#{companyName},</if>
+			<if test="transformerSubName!=null &amp;&amp; transformerSubName != ''">transformerSubName=#{transformerSubName},</if>
+			<if test="classes!=null &amp;&amp; classes != ''">classes=#{classes},</if>
+			<if test="passcode!=null &amp;&amp; passcode != ''">passcode=#{passcode},</if>
+		</trim>
+		where id = #{id}
+	</update>
+	
+	<delete id="deleteLockByName" parameterType="java.lang.String">
+		delete from lockinfo where lockName = #{lockName}
+	</delete>
+
+	<delete id="deleteLockById" parameterType="java.lang.Integer">
+		delete from lockinfo where id = #{id}
+	</delete>
+
+
+
+
+
+</mapper>

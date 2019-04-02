@@ -6,30 +6,37 @@
 		<result column="id" property="id" />
 		<result column="mac" property="mac" />
 		<result column="did" property="did" />
+		<result column="lockName" property="lockName" />
 		<result column="companyName" property="companyName" />
 	</resultMap>
+	
+	<select id="selectLockByName" resultType="com.app.bzpower.entity.LockInfo">
+		select * from lockInfo where lockName = #{lockName}
+	</select>
 	
 	<select id="selectLockList" resultType="com.app.bzpower.entity.LockInfo">
 		select * from lockInfo
 	</select>
+	
+	
 
-	<!-- <insert id="saveLog" parameterType="java.lang.String" >
-		insert into log(mac, did, requestTime, actionD)
-					values (#{mac}, #{did},#{requestTime}, #{actionD})
-	</insert> -->
+	<insert id="insertLock" parameterType="com.app.bzpower.entity.LockInfo" >
+		insert into lockinfo( did, mac, lockName, companyName)
+					values (#{did}, #{mac},#{lockName}, #{companyName})
+	</insert>
 
 <!--  
 	<update id="updateDevice"
 		parameterType="com.system.xianbozhan.entity.Device">
 		
 	</update>
+-->	
 	
-	
-	<delete id="deleteDevice" parameterType="java.lang.Integer">
-		delete from device where id = #{id}
+	<delete id="deleteLockByName" parameterType="java.lang.String">
+		delete from lockinfo where lockName = #{lockName}
 	</delete>
 
--->
+
 
 
 

@@ -11,9 +11,10 @@ public interface LogDao {
 	/*
 	 * 保存请求设备信息
 	 */
-	void insertUserRequestOpenLock(@Param("userName")String userName, @Param("did")String did, @Param("mac") String mac, @Param("requestTime")
-	String requestTime, @Param("actionD")String actionD, @Param("request") String request);
+//	void insertUserRequestOpenLock(@Param("userName")String userName, @Param("did")String did, @Param("mac") String mac, @Param("requestTime")
+//	String requestTime, @Param("on_off")int on_off, @Param("actionD") int actionD, @Param("status") int status);
 	
+	void insertUserRequestOpenLock(Log log);
 	
 	/*
 	 * 修改开锁时间
@@ -23,13 +24,15 @@ public interface LogDao {
 	/*
 	 * 查询请求信息
 	 */
-	List<Log> getLog(@Param("request") String request);
+	List<Log> getLog(@Param("status") int status, @Param("actionD") int actionD);
+	
+	Log getLogById(@Param("id") int id);
 	
 	
 	/*
 	 * 更新开锁申请信息
 	 */
-	void updateOpenLockInfo(@Param("id") int id,@Param("request") String request,
-			@Param("openTime")String openTime, @Param("actionD") String actionD);
+	void updateOpenLockInfo(@Param("id") int id,@Param("openTime") String openTime,
+			@Param("on_off")int on_off, @Param("actionD") int actionD, @Param("status") int status);
 	
 }

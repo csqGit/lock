@@ -1,6 +1,5 @@
 package com.app.bzpower.entity;
 
-import java.util.Date;
 
 /**
  * 日志表
@@ -10,19 +9,21 @@ public class Log {
 
 	private Integer id;
 	private String company;//所属公司
-	private String userId;//用户的编号
+	private String userName;//用户的编号
 	private String mac;//锁的mac地址
 	private String did;//锁编号
 	private String requestTime;//请求开锁时间
 	private String openTime;//开锁时间
 	private String closeTime;//关锁时间
-	private String actionD;//开箱动作
+	private int actionD;//审核状态
+	private int onOff;//开关状态
+	private int status;//锁状态
 	public Log() {
 		
 	}
-	public Log(String userId, String mac, String did, String openTime, String closeTime, String actionD) {
+	public Log(String userName, String mac, String did, String openTime, String closeTime, int actionD) {
 		super();
-		this.userId = userId;
+		this.userName = userName;
 		this.mac = mac;
 		this.did = did;
 		this.openTime = openTime;
@@ -45,15 +46,19 @@ public class Log {
 		return company;
 	}
 	public void setCompany(String company) {
+		if(company == null || "".equals(company)) {
+			company = "西安博展电力技术有限公司";
+		}
 		this.company = company;
 	}
-	public String getUserId() {
-		return userId;
-	}
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
 	
+	
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 	public String getMac() {
 		return mac;
 	}
@@ -80,16 +85,30 @@ public class Log {
 	public void setCloseTime(String closeTime) {
 		this.closeTime = closeTime;
 	}
-	public String getActionD() {
+	public int getActionD() {
 		return actionD;
 	}
-	public void setActionD(String actionD) {
+	public void setActionD(int actionD) {
 		this.actionD = actionD;
+	}
+	
+	public int getOnOff() {
+		return onOff;
+	}
+	public void setOnOff(int onOff) {
+		this.onOff = onOff;
+	}
+	public int getStatus() {
+		return status;
+	}
+	public void setStatus(int status) {
+		this.status = status;
 	}
 	@Override
 	public String toString() {
-		return "Log [id=" + id + ", company=" + company + ", userId=" + userId + ", mac=" + mac + ", did=" + did
-				+ ", openTime=" + openTime + ", closeTime=" + closeTime + ", action=" + actionD + "]";
+		return "Log [id=" + id + ", company=" + company + ", userName=" + userName + ", mac=" + mac + ", did=" + did
+				+ ", requestTime=" + requestTime + ", openTime=" + openTime + ", closeTime=" + closeTime + ", actionD="
+				+ actionD + ", request=" + onOff + ", status=" + status + "]";
 	}
 	
 	

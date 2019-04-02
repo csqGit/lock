@@ -11,7 +11,9 @@ public interface LogService {
 	 * 保存请求设备信息
 	 */
 	void insertUserRequestOpenLock(String userName, String did, String mac, String requestTime,
-			String actionD, String request);
+			int on_off, int actionD, int status);
+	
+	void insertUserRequestOpenLock(Log log);
 	
 	
 	/*
@@ -22,11 +24,16 @@ public interface LogService {
 	/*
 	 * 查询请求信息
 	 */
-	List<Log> getLog(@Param("request") String request);
+	List<Log> getLog(int status, int actionD);
+	
+	/*
+	 * 查询设备信息根据id
+	 */
+	Log getLogById(int id);
 	
 	/*
 	 * 更新开锁申请信息
 	 */
-	void updateOpenLockInfo(int id,String request,String openTime,  String actionD);
+	void updateOpenLockInfo(int id, String openTime, int on_off, int actionD, int status);
 	
 }

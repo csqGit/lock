@@ -7,6 +7,7 @@ public class LockInfo {
 	private Integer id;
 	private String did;//箱体编号
 	private String mac;//箱体名称
+	private String lockName;//锁名称，系统自动生成
 	private String companyName;//所属公司
 	public Integer getId() {
 		return id;
@@ -33,9 +34,18 @@ public class LockInfo {
 	public void setCompanyName(String companyName) {
 		this.companyName = companyName;
 	}
+	
+	
+	public String getLockName() {
+		return lockName;
+	}
+	public void setLockName(String lockName) {
+		this.lockName = lockName;
+	}
 	@Override
 	public String toString() {
-		return "Lock [id=" + id + ", did=" + did + ", mac=" + mac + ", companyId=" + companyName + "]";
+		return "LockInfo [id=" + id + ", did=" + did + ", mac=" + mac + ", lockName=" + lockName + ", companyName="
+				+ companyName + "]";
 	}
 	
 	
